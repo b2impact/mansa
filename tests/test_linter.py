@@ -1,4 +1,8 @@
-from mansa.linter import lint_code, lint_notebook
+import ast  # noqa: F401
+
+import pytest  # noqa: F401
+
+from mansa.linter import lint_code, lint_notebook  # noqa: F401
 
 # Sample configuration for tests
 config = {

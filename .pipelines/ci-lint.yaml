@@ -19,13 +19,7 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-# - task: Cache@2
-#   displayName: 'Cache Pip '
-#   inputs:
-#     key: 'pip | "$(Agent.OS)" | tests/requirements.txt'
-#     path: '$(Pipeline.Workspace)/s/.pip'
-#     cacheHitVar: cacheRestored
-#     restoreKeys: 'pip | "$(Agent.OS)" | tests/requirements.txt'
+
 - task: UsePythonVersion@0
   displayName: 'Use Python 3.9'
   inputs:
@@ -40,6 +34,11 @@ steps:
   inputs:
     targetType: 'inline'
     script: 'poetry config virtualenvs.in-project true'
+- task: Cache@2
+  displayName: 'Cache Poetry virtualenv'
+  inputs:
+    key: "$(Agent.OS)-venv-${{ hashFiles('**/poetry.lock') }}"
+    path: '$(Pipeline.Workspace)/s/.pip'
 - task: Bash@3
   displayName: 'Install dependencies'
   inputs:

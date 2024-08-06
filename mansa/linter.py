@@ -3,6 +3,7 @@ import ast
 import json
 import os
 import re
+import textwrap
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 import toml
@@ -104,6 +105,7 @@ def lint_code(code: str, config: dict) -> list:
     list
         _description_
     """
+    code = textwrap.dedent(code)
     tree = ast.parse(code)
     linter = MansaLinter(config)
     linter.visit(tree)

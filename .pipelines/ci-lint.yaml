@@ -96,7 +96,7 @@ steps:
   displayName: 'Pytest Unit Test with Coverage Report'
   inputs:
     targetType: 'inline'
-    script: 'poetry run pytest -v — junitxml=junit/test-results.xml --cov . --cov-report xml'
+    script: 'poetry run pytest -v --–no-coverage-upload --junitxml=junit/test-results.xml --cov . --cov-report xml'
 - task: PublishCodeCoverageResults@2
   displayName: 'Publish Cobertura Coverage Report'
   inputs:

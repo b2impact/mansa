@@ -1,8 +1,4 @@
-import ast
-
-import pytest  # noqa: D100
-
-from mansa.linter import MansaLinter, lint_code, lint_notebook
+from mansa.linter import lint_code, lint_notebook
 
 # Sample configuration for tests
 config = {
@@ -65,7 +61,8 @@ def test_invalid_tag_value():
 
 def test_valid_tags():
     code = """
-    instance = ComputeInstance(name='my_instance', tags={'environment': 'dev', 'businessOwner': 'owner@example.com', 'technicalOwner': 'USA-IT', 'businesUnit': 'BU1', 'source': 'terraform', 'ismsClassification': 'M'})
+    instance = ComputeInstance(name='my_instance', tags={'environment': 'dev', 'businessOwner': 'owner@example.com',
+    'technicalOwner': 'USA-IT', 'businesUnit': 'BU1', 'source': 'terraform', 'ismsClassification': 'M'})
     """
     errors = lint_code(code, config)
     assert len(errors) == 0

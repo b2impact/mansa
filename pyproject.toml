@@ -112,6 +112,7 @@ known-first-party = []
 # Ignore `E402` (import violations) in all `__init__.py` files, and in `path/to/file.py`.
 "__init__.py" = ["E402"]
 "path/to/file.py" = ["E402"]
+"tests/*" = ["S101", "D100", "D103"]
 
 [tool.ruff.format]
 # Like Black, use double quotes for strings.

@@ -46,27 +46,29 @@ def test_invalid_tags_format():
     errors = lint_code(code, config)
     assert len(errors) == 1
     print(errors)
-    assert errors[0][3] == "Tags argument is not a valid dictionary"
+    assert errors[0][2] == "Tags argument is not a valid dictionary"
 
 
 def test_invalid_tag_key():
     code = """
     instance = ComputeInstance(name='my_instance', tags={'invalid_key': 'value'})
     """
+    code = textwrap.dedent(code)
     errors = lint_code(code, config)
     print(errors)
     assert len(errors) == 1
-    assert errors[0][3] == "Invalid tag key 'invalid_key'"
+    assert errors[0][2] == "Invalid tag key 'invalid_key'"
 
 
 def test_invalid_tag_value():
     code = """
     instance = ComputeInstance(name='my_instance', tags={'environment': 'invalid'})
     """
+    code = textwrap.dedent(code)
     errors = lint_code(code, config)
     print(errors)
     assert len(errors) == 1
-    assert errors[0][3] == "Invalid value 'invalid' for key 'environment'"
+    assert errors[0][2] == "Invalid value 'invalid' for key 'environment'"
 
 
 def test_valid_tags():

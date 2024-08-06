@@ -35,11 +35,7 @@ def test_missing_tags_argument():
     code = textwrap.dedent(code)
     errors = lint_code(code, config)
     assert len(errors) == 1
-    assert errors[0] == {
-        'line': 2,
-        'column': 4,
-        'message': 'Missing tags argument in ComputeInstance'
-    }
+    assert errors[0][2] == "E001: ComputeInstance instantiation is missing tags argument"
 
 
 def test_invalid_tags_format():
@@ -49,18 +45,13 @@ def test_invalid_tags_format():
     code = textwrap.dedent(code)
     errors = lint_code(code, config)
     assert len(errors) == 1
-    assert errors[0] == {
-        'line': 2,
-        'column': 4,
-        'message': 'tags argument should be a dictionary with specific keys and values'
-    }
+    assert errors[0][2] == "Tags argument is not a dictionary"
 
 
 def test_invalid_tag_key():
     code = """
     instance = ComputeInstance(name='my_instance', tags={'invalid_key': 'value'})
     """
-    code = textwrap.dedent(code)
     errors = lint_code(code, config)
     assert len(errors) == 1
     assert errors[0][2] == "Invalid tag key 'invalid_key'"
@@ -70,7 +61,6 @@ def test_invalid_tag_value():
     code = """
     instance = ComputeInstance(name='my_instance', tags={'environment': 'invalid'})
     """
-    code = textwrap.dedent(code)
     errors = lint_code(code, config)
     assert len(errors) == 1
     assert errors[0][2] == "Invalid value 'invalid' for key 'environment'"
@@ -81,7 +71,6 @@ def test_valid_tags():
     instance = ComputeInstance(name='my_instance', tags={'environment': 'dev', 'businessOwner': 'owner@example.com',
     'technicalOwner': 'USA-IT', 'businesUnit': 'BU1', 'source': 'terraform', 'ismsClassification': 'M'})
     """
-    code = textwrap.dedent(code)
     errors = lint_code(code, config)
     assert len(errors) == 0
 

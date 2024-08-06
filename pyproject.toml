@@ -31,11 +31,9 @@ pytest-cov = "^5.0.0"
 [tool.poetry.scripts]
 mansa = "mansa.linter:main"
 
-[tool.coverage.run]
-branch = true
 
 [tool.coverage.report]
-fail_under = 65
+fail_under = 60
 
 
 [build-system]

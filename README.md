@@ -2,7 +2,7 @@
 
 
 <center>
-![image.jpg](/.docs/images/meme.png)
+![image.jpg](docs/images/meme.jpg)
 </center>
 
 FinOps is an operational framework and cultural practice that enhances the business value derived from cloud technology. It promotes data-driven decision-making in a timely manner and fosters financial responsibility. It gets achieved through collaboration among engineering, finance, and business teams.

@@ -1,7 +1,7 @@
 # Mansa - a FinOps aware linter
 
 
-<div style="text-align: center;">
+<div align="center">
     <img width="40%" src="/docs/images/meme.jpg">
 </div>
 

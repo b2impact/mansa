@@ -93,7 +93,7 @@ steps:
           exit 0
       fi
 - task: Bash@3
-  displayName: 'Unit tests'
+  displayName: 'Unit tests and Coverage Report'
   inputs:
     targetType: 'inline'
-    script: 'poetry run pytest'
+    script: 'poetry run pytest --cov . --cov-report html'

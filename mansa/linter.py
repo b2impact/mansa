@@ -31,7 +31,7 @@ class MansaLinter(ast.NodeVisitor):
         self.errors = []
         self.target_classes = config.get("target_classes", {})
 
-    def visit_Call(self, node) -> None:
+    def visit_Call(self, node) -> None:  # noqa: N802 # Abstract Syntax Tree (AST) and NodeVisitor
         """
         visit_call _summary_.
 

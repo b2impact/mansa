@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/b2holdingglobal/Data%20and%20Analytics%20-%20Internal/_apis/build/status%2Fdna-mansa?branchName=main)](https://dev.azure.com/b2holdingglobal/Data%20and%20Analytics%20-%20Internal/_build/latest?definitionId=320&branchName=main)
+
 # Mansa - a FinOps aware linter
 
 ![image.jpg](./docs/images/meme.jpg){fig-align="center"}
@@ -82,7 +84,15 @@ As usual, we stick to [TBD](https://trunkbaseddevelopment.com/), Create your own
 
     -   enh/improvement (for enhancement, usually runtime performance).
 
-### Introducing dependencies.
+### Run tests
+
+To run the tests, run the following in the root directory of the project:
+
+``` bash
+poetry run pytest
+```
+
+### Introducing dependencies
 
 Please install dependencies via:
 

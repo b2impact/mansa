@@ -1,9 +1,9 @@
 # Mansa - a FinOps aware linter
 
 
-<div align="center">
-    <img width="40%" src="/docs/images/meme.jpg">
-</div>
+<center>
+![image.jpg](/.docs/images/meme.png)
+</center>
 
 FinOps is an operational framework and cultural practice that enhances the business value derived from cloud technology. It promotes data-driven decision-making in a timely manner and fosters financial responsibility. It gets achieved through collaboration among engineering, finance, and business teams.
 

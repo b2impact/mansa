@@ -48,8 +48,7 @@ class MansaLinter(ast.NodeVisitor):
                     (
                         node.lineno,
                         node.func.id,
-                        f"""{error_code}: '{node.func.id}'
-                     instantiation is missing 'tags' argument""",
+                        f"""{error_code}: '{node.func.id}' instantiation is missing 'tags' argument""",
                     )
                 )
             else:

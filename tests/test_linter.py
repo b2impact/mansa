@@ -75,7 +75,7 @@ def test_valid_tags():
     code = """
     instance = ComputeInstance(name='my_instance', tags={'environment': 'dev',
     'businessOwner': 'lukasthegreat@b2-impact.com',
-    'technicalOwner': 'da-modelling', 'businesUnit': 'swe', 'source': 'amlsdk2', 
+    'technicalOwner': 'da-modelling', 'businesUnit': 'swe', 'source': 'amlsdk2',
     'ismsClassification': 'M'})
     """
     code = textwrap.dedent(code)

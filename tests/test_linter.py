@@ -29,11 +29,13 @@ config = {
 
 # Test cases
 def test_missing_tags_argument():
-    code = """instance = ComputeInstance(name='my_instance')"""
+    code = """
+    instance = ComputeInstance(name='my_instance')
+    """
     code = textwrap.dedent(code)
     errors = lint_code(code, config)
     assert len(errors) == 1
-    assert errors[0][2] == "E002 ComputeInstance instantiation is missing 'tags' argument"
+    assert errors[0][2] == "E002: 'ComputeInstance' instantiation is missing 'tags' argument"
 
 
 def test_invalid_tags_format():

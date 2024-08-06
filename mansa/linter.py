@@ -216,6 +216,5 @@ def main() -> None:
             print(f"{filepath}:{lineno}: {name}: {message}")
         else:
             print(f"{filepath}:{lineno}: {message}")
-
 if __name__ == "__main__":
     main()

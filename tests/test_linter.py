@@ -8,8 +8,8 @@ from mansa.linter import lint_code, lint_notebook  # noqa: F401
 # Sample configuration for tests
 config = {
     "target_classes": {
-        "ComputeInstance": "E001",
-        "AmlComputeProvisioningConfiguration": "E002",
+        "AmlComputeProvisioningConfiguration": "E001",
+        "ComputeInstance": "E002",
         "ComputeCluster": "E003",
         "BatchDeployment": "E004",
         "BatchEndpoint": "E005",
@@ -33,7 +33,7 @@ def test_missing_tags_argument():
     code = textwrap.dedent(code)
     errors = lint_code(code, config)
     assert len(errors) == 1
-    assert errors[0][2] == "E002: ComputeInstance instantiation is missing tags argument"
+    assert errors[0][2] == "E002 ComputeInstance instantiation is missing 'tags' argument"
 
 
 def test_invalid_tags_format():

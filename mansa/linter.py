@@ -40,7 +40,6 @@ class MansaLinter(ast.NodeVisitor):
         node : _type_
             _description_
         """
-        ## TODO Fix
         if isinstance(node.func, ast.Name) and node.func.id in self.target_classes:
             tags_arg = next((keyword for keyword in node.keywords if keyword.arg == "tags"), None)
             if not tags_arg:
@@ -71,11 +70,11 @@ class MansaLinter(ast.NodeVisitor):
             _description_
         """
         if not isinstance(tags_node, ast.Dict):
-            self.errors.append((lineno, class_name, "Tags argument is not a dictionary"))
+            self.errors.append((lineno, class_name, "Tags argument is not a valid dictionary"))
             return
-        for key, value in zip(tags_node.keys, tags_node.values, strict=False):
-            key_str = key.s if isinstance(key, ast.Str) else None
-            value_str = value.s if isinstance(value, ast.Str) else None
+        for key, value in zip(tags_node.keys, tags_node.values):  # noqa: B905
+            key_str = key.s if isinstance(key, ast.Constant) else None
+            value_str = value.s if isinstance(value, ast.Constant) else None
 
             if key_str not in VALID_TAGS:
                 self.errors.append((lineno, class_name, f"Invalid tag key '{key_str}'"))
@@ -218,7 +217,8 @@ def main() -> None:
             print(f"{filepath}:{lineno}: {name}: {message}")
         else:
             print(f"{filepath}:{lineno}: {message}")
-
+    import pdb
+    pdb.set_trace()
 
 if __name__ == "__main__":
     main()

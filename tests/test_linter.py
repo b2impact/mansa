@@ -73,8 +73,10 @@ def test_invalid_tag_value():
 
 def test_valid_tags():
     code = """
-    instance = ComputeInstance(name='my_instance', tags={'environment': 'dev', 'businessOwner': 'owner@example.com',
-    'technicalOwner': 'USA-IT', 'businesUnit': 'BU1', 'source': 'terraform', 'ismsClassification': 'M'})
+    instance = ComputeInstance(name='my_instance', tags={'environment': 'dev',
+    'businessOwner': 'lukasthegreat@b2-impact.com',
+    'technicalOwner': 'da-modelling', 'businesUnit': 'swe', 'source': 'amlsdk2', 
+    'ismsClassification': 'M'})
     """
     code = textwrap.dedent(code)
     errors = lint_code(code, config)

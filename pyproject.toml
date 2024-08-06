@@ -31,7 +31,8 @@ pytest-cov = "^5.0.0"
 [tool.poetry.scripts]
 mansa = "mansa.linter:main"
 
-
+[tool.coverage.run]
+omit = ['__init__.py']
 [tool.coverage.report]
 fail_under = 60
 skip_empty = true

@@ -14,7 +14,7 @@ Mansa is a lintin tool used internally at B2-Impact to enforce cost-tagging at b
 
 # Why Mansa?
 
-Usually IOps teams deploy their infrastructure using terraform/bicep/cdk languages. However in most of the cases the IOps teams are only in charge of deploying the infrastructure "container" that an application will use. In the case of Machine Learning this situation is even more common as the recursive an experimental nature of AI applications makes quite common the fact that we do not know which deployment configuration will be best during the development phase.
+Usually IOps teams deploy their infrastructure using terraform/bicep/cdk languages. However in most of the cases the IOps teams are only in charge of deploying the infrastructure "container" that an application will use. In the case of Machine Learning this situation is even more common as the recursive experimental nature of AI applications makes quite common the fact that we do not know which deployment configuration will be best during the development phase.
 
 Besides a lot of MLOps processes as creation of ML pipelines, compute clusters, job launching, inference endpoints etc... are invoked via python SDKs and not terraform code.
 

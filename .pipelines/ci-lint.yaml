@@ -34,10 +34,13 @@ steps:
   inputs:
     targetType: 'inline'
     script: 'poetry config virtualenvs.in-project true'
-# - task: Cache@2 # I need to figure it out this.
-#   displayName: 'Cache Poetry virtualenv'
-#   inputs:
-#     key: "$(Agent.OS)-venv-${{ hashFiles('**/poetry.lock') }}"
+- task: Cache@2
+  inputs:
+    key: 'poetry | "$(Agent.OS)" | poetry.lock'
+    path: '.venv'
+    restoreKeys: |
+      poetry | "$(Agent.OS)"
+      poetry
 - task: Bash@3
   displayName: 'Install dependencies'
   inputs:

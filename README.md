@@ -22,6 +22,8 @@ Because of that we decided to create Mansa. Mansa scans all your python code in 
 
 Mansa also looks that the tags contains a certain key-value pairs with allowed values. Currently this is hardcoded in the code but we plan to make this configurable via a section in the config.toml file.
 
+The tagging convention respects the rules available in our [CCoE Governance documentation.](https://dev.azure.com/b2holdingglobal/_git/CCoE%20-%20Internal?path=/Governance/TaggingPolicy.md&_a=preview)
+
 ## Why this name?
 
 Mansa Musa was the 9th Mansa of the Mali Empire, he was one of the richest people in history, according to some research \[1\] he was so rich that he was generating inflation wherever he went. His wealth was not measurable and therefore neither his spending. We took inspiration of his story for the naming of this package as we believe is important to keep track of cost but also because [cloud cost inflation is a real phenomena](https://www.techtarget.com/searchcio/news/366570542/Cloud-costs-continue-to-rise-in-2024#:~:text=The%20cloud%20inflation%20trend%20looks,pattern%20of%20rising%20cloud%20costs.).

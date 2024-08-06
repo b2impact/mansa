@@ -98,6 +98,6 @@ steps:
     targetType: 'inline'
     script: 'poetry run pytest -v --no-coverage-upload --junitxml=junit/test-results.xml --cov . --cov-report xml'
 - task: PublishCodeCoverageResults@2
-  displayName: 'Publish Cobertura Coverage Report'
+  displayName: 'Publish Coverage Report'
   inputs:
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'

@@ -3,10 +3,10 @@ import textwrap
 
 import pytest  # noqa: F401
 
-from mansa.linter import lint_code, lint_notebook  # noqa: F401
+from mansa.linter import MansaLinter, lint_code, lint_notebook  # noqa: F401
 
 # Sample configuration for tests
-config = {
+azure_ml_config = {
     "target_classes": {
         "AmlComputeProvisioningConfiguration": "E001",
         "ComputeInstance": "E002",
@@ -26,6 +26,30 @@ config = {
     }
 }
 
+cloud_provider_config = {
+        "azure": {
+            "machine_learning": {
+                "target_classes": {
+                    "AmlComputeProvisioningConfiguration": "E001",
+                    "ComputeInstance": "E002",
+                    "ComputeCluster": "E003",
+                    "BatchDeployment": "E004",
+                    "BatchEndpoint": "E005",
+                    "Jobs": "E006",
+                    "ManagedOnlineEndpoint": "E007",
+                    "ModelBatchDeployment": "E008",
+                    "OnlineDeployment": "E009",
+                    "OnlineEndpoint": "E010",
+                    "PipelineComponent": "E011",
+                    "PipelineComponentBatchDeployment": "E012",
+                    "Deployment": "E013",
+                    "AzureOpenAIDeployment": "E014",
+                    "ServerlessEndpoint": "E015"
+                }
+            }
+        }
+    }
+
 
 # Test cases
 def test_missing_tags_argument():
@@ -33,7 +57,7 @@ def test_missing_tags_argument():
     instance = ComputeInstance(name='my_instance')
     """
     code = textwrap.dedent(code)
-    errors = lint_code(code, config)
+    errors = lint_code(code, azure_ml_config)
     assert len(errors) == 1
     assert errors[0][2] == "E002: 'ComputeInstance' instantiation is missing 'tags' argument"
 
@@ -43,7 +67,7 @@ def test_invalid_tags_format():
     instance = ComputeInstance(name='my_instance', tags='invalid')
     """
     code = textwrap.dedent(code)
-    errors = lint_code(code, config)
+    errors = lint_code(code, azure_ml_config)
     assert len(errors) == 1
     print(errors)
     assert errors[0][2] == "Tags argument is not a valid dictionary"
@@ -54,7 +78,7 @@ def test_invalid_tag_key():
     instance = ComputeInstance(name='my_instance', tags={'invalid_key': 'value'})
     """
     code = textwrap.dedent(code)
-    errors = lint_code(code, config)
+    errors = lint_code(code, azure_ml_config)
     print(errors)
     assert len(errors) == 1
     assert errors[0][2] == "Invalid tag key 'invalid_key'"
@@ -65,7 +89,7 @@ def test_invalid_tag_value():
     instance = ComputeInstance(name='my_instance', tags={'environment': 'invalid'})
     """
     code = textwrap.dedent(code)
-    errors = lint_code(code, config)
+    errors = lint_code(code, azure_ml_config)
     print(errors)
     assert len(errors) == 1
     assert errors[0][2] == "Invalid value 'invalid' for key 'environment'"
@@ -79,7 +103,7 @@ def test_valid_tags():
     'ismsClassification': 'M'})
     """
     code = textwrap.dedent(code)
-    errors = lint_code(code, config)
+    errors = lint_code(code, azure_ml_config)
     assert len(errors) == 0
 
 
@@ -89,7 +113,7 @@ def test_lint_notebook():
         import json
 
         json.dump(notebook_content, f)
-    errors = lint_notebook("tests/test_notebook.ipynb", config)
+    errors = lint_notebook("tests/test_notebook.ipynb", azure_ml_config)
     assert len(errors) == 1
     assert errors[0][2] == "E002: 'ComputeInstance' instantiation is missing 'tags' argument"
 
@@ -100,3 +124,7 @@ def teardown_module(module):
 
     if os.path.exists("tests/test_notebook.ipynb"):
         os.remove("tests/test_notebook.ipynb")
+
+def test_find_target_classes():
+    linter = MansaLinter(cloud_provider_config)
+    assert linter.target_classes == azure_ml_config

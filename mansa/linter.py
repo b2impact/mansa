@@ -4,8 +4,10 @@ import json
 import os
 import re
 from concurrent.futures import ProcessPoolExecutor, as_completed
+from typing import Union
 
 import toml
+from rich import print
 
 VALID_TAGS = {
     "environment": ["sbx", "dev", "pre", "pro", "hub"],
@@ -29,11 +31,40 @@ class MansaLinter(ast.NodeVisitor):
 
     def __init__(self, config):
         self.errors = []
-        self.target_classes = config.get("target_classes", {})
+        self.target_classes = self.find_target_classes(config)
+
+    def find_target_classes(self, config: dict, path: Union[list, None] = None) -> Union[dict, None]:
+        """
+        Detect automatically the configuration of a toml file.
+
+        Parameters
+        ----------
+        config : _type_
+            _description_
+        path : _type_, optional
+            _description_, by default None
+
+        Returns
+        -------
+        Any | dict
+            _description_
+        """
+        if path is None:
+            path = []
+
+        if isinstance(config, dict):
+            for key, value in config.items():
+                new_path = path + [key]
+                if key == "target_classes":
+                    return value
+                result = self.find_target_classes(value, new_path)
+                if result:
+                    return result
+        return None
 
     def visit_Call(self, node) -> None:  # noqa: N802 # Abstract Syntax Tree (AST) and NodeVisitor
         """
-        visit_call _summary_.
+        Overwrite ast.NodeVisitor.visit_Call().
 
         Parameters
         ----------
@@ -185,24 +216,28 @@ def process_file(filepath: str, config: dict) -> list[tuple]:
         errors = [(filepath, lineno, name, message) for lineno, name, message in lint_errors]
     return errors
 
-
 def main() -> None:
-    """Execute the linter via a cli invokation."""
+    """Execute the linter via a cli invocation."""
     parser = argparse.ArgumentParser(description="Custom Python Linter")
     parser.add_argument("--directory", type=str, help="Directory to scan for Python and Jupyter files")
+    parser.add_argument("--file", type=str, help="Single file to scan")
     parser.add_argument("--config", type=str, help="Path to config.toml for configuration", default="mansa/config.toml")
     args = parser.parse_args()
 
-    config_path = args.config
-    config = toml.load(config_path)
+    config = toml.load(args.config)
 
-    directory = args.directory
-    py_files, ipynb_files = scan_directory(directory)
-    all_files = py_files + ipynb_files
+    files_to_process = []
+    if args.file:
+        files_to_process.append(args.file)
+
+    if args.directory:
+        py_files, ipynb_files = scan_directory(args.directory)
+        files_to_process.extend(py_files)
+        files_to_process.extend(ipynb_files)
 
     all_errors = []
     with ProcessPoolExecutor() as executor:
-        futures = {executor.submit(process_file, filepath, config): filepath for filepath in all_files}
+        futures = {executor.submit(process_file, filepath, config): filepath for filepath in files_to_process}
         for future in as_completed(futures):
             filepath = futures[future]
             try:

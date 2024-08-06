@@ -27,6 +27,7 @@ toml = "^0.10.2"
 pre-commit = "^3.8.0"
 pytest-azurepipelines = "^1.0.5"
 pytest-cov = "^5.0.0"
+rich = "^13.7.1"
 
 [tool.poetry.scripts]
 mansa = "mansa.linter:main"
@@ -41,8 +42,6 @@ skip_empty = true
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-
 
 [tool.ruff]
 # Assume Python 3.9

@@ -24,6 +24,7 @@ python = "^3.9"
 ruff = "^0.5.6"
 pytest = "^8.3.2"
 toml = "^0.10.2"
+pre-commit = "^3.8.0"
 
 [tool.poetry.scripts]
 mansa = "mansa.linter:main"

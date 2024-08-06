@@ -1,0 +1,98 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include: # Collaboration branch
+    - main 
+  paths: # If this is the first pipeline it needs to trigger always @Obaid
+    exclude:
+    - docs/*
+    - README.md
+  #   - aml/*
+  #   - devops/aml/*
+  #   - tests/*.py
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+# - task: Cache@2
+#   displayName: 'Cache Pip '
+#   inputs:
+#     key: 'pip | "$(Agent.OS)" | tests/requirements.txt'
+#     path: '$(Pipeline.Workspace)/s/.pip'
+#     cacheHitVar: cacheRestored
+#     restoreKeys: 'pip | "$(Agent.OS)" | tests/requirements.txt'
+- task: UsePythonVersion@0
+  displayName: 'Use Python 3.9'
+  inputs:
+    versionSpec: 3.9
+- task: Bash@3
+  displayName: 'Install poetry'
+  inputs:
+    targetType: 'inline'
+    script: 'python -m pip install poetry'
+- task: Bash@3
+  displayName: 'Configure poetry'
+  inputs:
+    targetType: 'inline'
+    script: 'poetry config virtualenvs.in-project true'
+- task: Bash@3
+  displayName: 'Install dependencies'
+  inputs:
+    targetType: 'inline'
+    script: 'poetry install'
+- task: Bash@3
+  displayName: 'Lintin tests'
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Note that any change in this file, adding or removing steps or changing the
+      # printed messages, should be also reflected in the `get_comment.py` file.
+      
+      # This script shouldn't exit if a command / pipeline fails
+      set +e
+      # pipefail is necessary to propagate exit codes
+      set -o pipefail
+      global_status=0
+      
+      echo -e "### Running ruff ###\n"
+      ruff check .
+      status=$?
+      if [[ $status -eq 0 ]]
+      then
+          echo -e "No problem detected by ruff\n"
+      else
+          echo -e "Problems detected by ruff, please fix them\n"
+          global_status=1
+      fi
+
+      # echo -e "### Running mypy ###\n"
+      # mypy .
+      # status=$?
+      # if [[ $status -eq 0 ]]
+      # then
+      #     echo -e "No problem detected by mypy\n"
+      # else
+      #     echo -e "Problems detected by mypy, please fix them\n"
+      #     global_status=1
+      # fi
+      
+      echo -e "### Linting completed ###\n"
+      
+      if [[ $global_status -eq 1 ]]
+      then
+          echo -e "Linting failed\n"
+          exit 1
+      else
+          echo -e "Linting passed\n"
+          exit 0
+      fi
+- task: Bash@3
+  displayName: 'Unit tests'
+  inputs:
+    targetType: 'inline'
+    script: 'poetry run pytest'

@@ -45,7 +45,7 @@ def test_invalid_tags_format():
     code = textwrap.dedent(code)
     errors = lint_code(code, config)
     assert len(errors) == 1
-    assert errors[0][2] == "Tags argument is not a dictionary"
+    assert errors[0][3] == "Tags argument is not a valid dictionary"
 
 
 def test_invalid_tag_key():
@@ -54,7 +54,7 @@ def test_invalid_tag_key():
     """
     errors = lint_code(code, config)
     assert len(errors) == 1
-    assert errors[0][2] == "Invalid tag key 'invalid_key'"
+    assert errors[0][3] == "Invalid tag key 'invalid_key'"
 
 
 def test_invalid_tag_value():
@@ -63,7 +63,7 @@ def test_invalid_tag_value():
     """
     errors = lint_code(code, config)
     assert len(errors) == 1
-    assert errors[0][2] == "Invalid value 'invalid' for key 'environment'"
+    assert errors[0][3] == "Invalid value 'invalid' for key 'environment'"
 
 
 def test_valid_tags():

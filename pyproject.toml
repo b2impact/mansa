@@ -34,6 +34,7 @@ mansa = "mansa.linter:main"
 
 [tool.coverage.report]
 fail_under = 60
+skip_empty = true
 
 
 [build-system]

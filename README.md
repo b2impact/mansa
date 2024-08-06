@@ -26,7 +26,7 @@ The tagging convention respects the rules available in our [CCoE Governance docu
 
 ## Why this name?
 
-Mansa Musa was the 9th Mansa of the Mali Empire, he was one of the richest people in history. According to some research \[1\] he was so rich that he was generating inflation wherever he went. His wealth was not measurable and therefore neither his spending. We took inspiration of his story for the naming of this package as we believe that is important to keep track of cost and we do not want to contribute to the [cloud cost inflation phenomena](https://www.techtarget.com/searchcio/news/366570542/Cloud-costs-continue-to-rise-in-2024#:~:text=The%20cloud%20inflation%20trend%20looks,pattern%20of%20rising%20cloud%20costs.).
+[Mansa Musa](https://en.wikipedia.org/wiki/Mansa_Musa) was the 9th Mansa of the Mali Empire, he was one of the richest people in history. According to some research \[1\] he was so rich that he was generating inflation wherever he went. His wealth was not measurable and therefore neither his spending. We took inspiration of his story for the naming of this package as we believe that is important to keep track of cost and we do not want to contribute to the [cloud cost inflation phenomena](https://www.techtarget.com/searchcio/news/366570542/Cloud-costs-continue-to-rise-in-2024#:~:text=The%20cloud%20inflation%20trend%20looks,pattern%20of%20rising%20cloud%20costs.).
 
 # Usage
 
@@ -103,5 +103,7 @@ poetry add {dependency-name}=={version}
 ```
 
 When doing that your pyproject.toml file will be automatically updated as well as the lock files.
+
+### References
 
 \[1\] Goodwin, A. J. H. (1957). The Medieval Empire of Ghana. *The South African Archaeological Bulletin*, *12*(47), 108–112. https://doi.org/10.2307/3886971

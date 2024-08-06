@@ -1,4 +1,5 @@
 import ast  # noqa: F401
+import textwrap
 
 import pytest  # noqa: F401
 
@@ -31,24 +32,35 @@ def test_missing_tags_argument():
     code = """
     instance = ComputeInstance(name='my_instance')
     """
+    code = textwrap.dedent(code)
     errors = lint_code(code, config)
     assert len(errors) == 1
-    assert errors[0][2] == "E001: ComputeInstance instantiation is missing tags argument"
+    assert errors[0] == {
+        'line': 2,
+        'column': 4,
+        'message': 'Missing tags argument in ComputeInstance'
+    }
 
 
 def test_invalid_tags_format():
     code = """
     instance = ComputeInstance(name='my_instance', tags='invalid')
     """
+    code = textwrap.dedent(code)
     errors = lint_code(code, config)
     assert len(errors) == 1
-    assert errors[0][2] == "Tags argument is not a dictionary"
+    assert errors[0] == {
+        'line': 2,
+        'column': 4,
+        'message': 'tags argument should be a dictionary with specific keys and values'
+    }
 
 
 def test_invalid_tag_key():
     code = """
     instance = ComputeInstance(name='my_instance', tags={'invalid_key': 'value'})
     """
+    code = textwrap.dedent(code)
     errors = lint_code(code, config)
     assert len(errors) == 1
     assert errors[0][2] == "Invalid tag key 'invalid_key'"
@@ -58,6 +70,7 @@ def test_invalid_tag_value():
     code = """
     instance = ComputeInstance(name='my_instance', tags={'environment': 'invalid'})
     """
+    code = textwrap.dedent(code)
     errors = lint_code(code, config)
     assert len(errors) == 1
     assert errors[0][2] == "Invalid value 'invalid' for key 'environment'"
@@ -68,6 +81,7 @@ def test_valid_tags():
     instance = ComputeInstance(name='my_instance', tags={'environment': 'dev', 'businessOwner': 'owner@example.com',
     'technicalOwner': 'USA-IT', 'businesUnit': 'BU1', 'source': 'terraform', 'ismsClassification': 'M'})
     """
+    code = textwrap.dedent(code)
     errors = lint_code(code, config)
     assert len(errors) == 0
 

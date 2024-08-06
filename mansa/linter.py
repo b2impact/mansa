@@ -1,10 +1,11 @@
-import ast
-import os
-import json
 import argparse
-import toml
+import ast
+import json
+import os
 import re
 from concurrent.futures import ProcessPoolExecutor, as_completed
+
+import toml
 
 VALID_TAGS = {
     "environment": ["sbx", "dev", "pre", "pro", "hub"],
@@ -20,7 +21,8 @@ class CustomLinter(ast.NodeVisitor):
         self.errors = []
         self.target_classes = config.get("target_classes", {})
 
-    def visit_Call(self, node):
+    def visit_call(self, node):
+        ## TODO Fix
         if isinstance(node.func, ast.Name) and node.func.id in self.target_classes:
             tags_arg = next((keyword for keyword in node.keywords if keyword.arg == 'tags'), None)
             if not tags_arg:
@@ -34,8 +36,7 @@ class CustomLinter(ast.NodeVisitor):
         if not isinstance(tags_node, ast.Dict):
             self.errors.append((lineno, class_name, "Tags argument is not a dictionary"))
             return
-        
-        for key, value in zip(tags_node.keys, tags_node.values):
+        for key, value in zip(tags_node.keys, tags_node.values, strict=False):
             key_str = key.s if isinstance(key, ast.Str) else None
             value_str = value.s if isinstance(value, ast.Str) else None
 
@@ -95,7 +96,8 @@ def main():
 
     config_path = args.config
     config = toml.load(config_path)
-    
+    config = config.get("classes", {}).get("names", [])
+
     directory = args.directory
     py_files, ipynb_files = scan_directory(directory)
     all_files = py_files + ipynb_files
@@ -110,7 +112,7 @@ def main():
                 all_errors.extend(errors)
             except Exception as exc:
                 print(f'{filepath} generated an exception: {exc}')
-    
+
     for filepath, lineno, name, message in all_errors:
         if name:
             print(f"{filepath}:{lineno}: {name}: {message}")

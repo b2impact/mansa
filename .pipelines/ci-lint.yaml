@@ -58,7 +58,7 @@ steps:
       global_status=0
       
       echo -e "### Running ruff ###\n"
-      ruff check .
+      poetry run ruff check .
       status=$?
       if [[ $status -eq 0 ]]
       then
@@ -69,7 +69,7 @@ steps:
       fi
 
       # echo -e "### Running mypy ###\n"
-      # mypy .
+      # poetry run mypy .
       # status=$?
       # if [[ $status -eq 0 ]]
       # then

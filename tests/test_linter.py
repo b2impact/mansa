@@ -76,6 +76,7 @@ def test_valid_tags():
     instance = ComputeInstance(name='my_instance', tags={'environment': 'dev', 'businessOwner': 'owner@example.com',
     'technicalOwner': 'USA-IT', 'businesUnit': 'BU1', 'source': 'terraform', 'ismsClassification': 'M'})
     """
+    code = textwrap.dedent(code)
     errors = lint_code(code, config)
     assert len(errors) == 0
 
@@ -88,7 +89,7 @@ def test_lint_notebook():
         json.dump(notebook_content, f)
     errors = lint_notebook("tests/test_notebook.ipynb", config)
     assert len(errors) == 1
-    assert errors[0][2] == "E001: ComputeInstance instantiation is missing tags argument"
+    assert errors[0][2] == "E002: 'ComputeInstance' instantiation is missing 'tags' argument"
 
 
 # Clean up test notebook file after tests

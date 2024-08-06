@@ -35,16 +35,16 @@ cloud_provider_config = {
                     "ComputeCluster": "E003",
                     "BatchDeployment": "E004",
                     "BatchEndpoint": "E005",
-                    "Jobs": "E006",
-                    "ManagedOnlineEndpoint": "E007",
-                    "ModelBatchDeployment": "E008",
-                    "OnlineDeployment": "E009",
-                    "OnlineEndpoint": "E010",
-                    "PipelineComponent": "E011",
-                    "PipelineComponentBatchDeployment": "E012",
-                    "Deployment": "E013",
+                    "ManagedOnlineEndpoint": "E006",
+                    "ModelBatchDeployment": "E007",
+                    "OnlineDeployment": "E008",
+                    "OnlineEndpoint": "E009",
+                    "PipelineComponent": "E010",
+                    "PipelineComponentBatchDeployment": "E011",
+                    "Deployment": "E012",
+                    "Jobs": "E013",
                     "AzureOpenAIDeployment": "E014",
-                    "ServerlessEndpoint": "E015"
+                    "ServerlessEndpoint": "E015",
                 }
             }
         }

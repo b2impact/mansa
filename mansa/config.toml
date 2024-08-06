@@ -1,0 +1,19 @@
+[classes]
+names = [
+    "ComputeInstance",
+    "AmlComputeProvisioningConfiguration",
+    "ComputeCluster",
+    "BatchDeployment",
+    "BatchEndpoint",
+    "ManagedOnlineEndpoint",
+    "ModelBatchDeployment",
+    "OnlineDeployment",
+    "OnlineEndpoint",
+    "PipelineComponent",
+    "PipelineComponentBatchDeployment",
+    "Deployment",
+    "Jobs",
+    "AzureOpenAIDeployment",
+    "ServerlessEndpoint"
+]
+

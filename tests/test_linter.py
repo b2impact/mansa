@@ -127,4 +127,4 @@ def teardown_module(module):
 
 def test_find_target_classes():
     linter = MansaLinter(cloud_provider_config)
-    assert linter.target_classes == azure_ml_config
+    assert linter.target_classes == azure_ml_config["target_classes"]

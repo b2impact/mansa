@@ -1,8 +1,6 @@
 # Mansa - a FinOps aware linter
 
-
-
-![image.jpg](./docs/images/meme.jpg)
+![image.jpg](./docs/images/meme.jpg){fig-align="center"}
 
 FinOps is an operational framework and cultural practice that enhances the business value derived from cloud technology. It promotes data-driven decision-making in a timely manner and fosters financial responsibility. It gets achieved through collaboration among engineering, finance, and business teams.
 
@@ -34,17 +32,64 @@ mansa /path/to/your/directory
 
 # Build Instructions
 
-1.  Install dependencies and build the package:
+1.  Install poetry via the [oficial installer](https://python-poetry.org/docs/#installing-with-the-official-installer):
 
     ``` bash
-    cd mansa
+    curl -sSL https://install.python-poetry.org | python3 -
+    ```
+
+2.  Clone this repository with:
+
+    ``` bash
+    git clone https://b2holdingglobal@dev.azure.com/b2holdingglobal/Data%20and%20Analytics%20-%20Internal/_git/dna-mansa
+    ```
+
+    Or if you have an [Azure DevOps ssh key](https://learn.microsoft.com/en-us/azure/devops/repos/git/use-ssh-keys-to-authenticate?view=azure-devops) in your computer:
+
+    ``` bash
+    git@ssh.dev.azure.com:v3/b2holdingglobal/Data%20and%20Analytics%20-%20Internal/dna-mansa
+    ```
+
+3.  Ensure poetry is using the correct virtual environment. You can activate the environment manually with:
+
+    ``` bash
+    poetry shell
+    ```
+
+4.  Install dependencies and build the package:
+
+    ``` bash
     poetry install
     ```
 
-2.  Build the package:
+5.  Build the package:
 
     ``` bash
     poetry build
     ```
+
+# Development guidelines
+
+As usual, we stick to [TBD](https://trunkbaseddevelopment.com/), Create your own branch according to the following guidelines:
+
+-   {type_of_branch}/{namefirstlettersurnamefirstlettersurnamesecondletter}/{change_name}
+
+-   Being type of branch:
+
+    -   feat (of feature).
+
+    -   bugfix/fix (to fix a bug).
+
+    -   enh/improvement (for enhancement, usually runtime performance).
+
+### Introducing dependencies.
+
+Please install dependencies via:
+
+``` bash
+poetry add {dependency-name}=={version}
+```
+
+When doing that your pyproject.toml file will be automatically updated as well as the lock files.
 
 \[1\] Goodwin, A. J. H. (1957). The Medieval Empire of Ghana. *The South African Archaeological Bulletin*, *12*(47), 108–112. https://doi.org/10.2307/3886971

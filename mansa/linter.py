@@ -31,7 +31,7 @@ class MansaLinter(ast.NodeVisitor):
         self.errors = []
         self.target_classes = config.get("target_classes", {})
 
-    def visit_call(self, node) -> None:
+    def visit_Call(self, node) -> None:
         """
         visit_call _summary_.
 
@@ -197,7 +197,6 @@ def main() -> None:
 
     config_path = args.config
     config = toml.load(config_path)
-    config = config.get("classes", {}).get("names", [])
 
     directory = args.directory
     py_files, ipynb_files = scan_directory(directory)

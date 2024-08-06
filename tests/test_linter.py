@@ -1,23 +1,90 @@
+import ast
+
 import pytest  # noqa: D100
 
-from mansa.linter import MansaLinter
+from mansa.linter import MansaLinter, lint_code, lint_notebook
 
-## Teardown setup????
+# Sample configuration for tests
+config = {
+    "target_classes": {
+        "ComputeInstance": "E001",
+        "AmlComputeProvisioningConfiguration": "E002",
+        "ComputeCluster": "E003",
+        "BatchDeployment": "E004",
+        "BatchEndpoint": "E005",
+        "ManagedOnlineEndpoint": "E006",
+        "ModelBatchDeployment": "E007",
+        "OnlineDeployment": "E008",
+        "OnlineEndpoint": "E009",
+        "PipelineComponent": "E010",
+        "PipelineComponentBatchDeployment": "E011",
+        "Deployment": "E012",
+        "Jobs": "E013",
+        "AzureOpenAIDeployment": "E014",
+        "ServerlessEndpoint": "E015",
+    }
+}
 
-@pytest.fixture
-def test_scan_directory() -> None:
-    return None
+
+# Test cases
+def test_missing_tags_argument():
+    code = """
+    instance = ComputeInstance(name='my_instance')
+    """
+    errors = lint_code(code, config)
+    assert len(errors) == 1
+    assert errors[0][2] == "E001: ComputeInstance instantiation is missing tags argument"
 
 
-def test_validate_tags() -> None:
-    return None
+def test_invalid_tags_format():
+    code = """
+    instance = ComputeInstance(name='my_instance', tags='invalid')
+    """
+    errors = lint_code(code, config)
+    assert len(errors) == 1
+    assert errors[0][2] == "Tags argument is not a dictionary"
 
-def test_lint_code() -> None:
-    return None
+
+def test_invalid_tag_key():
+    code = """
+    instance = ComputeInstance(name='my_instance', tags={'invalid_key': 'value'})
+    """
+    errors = lint_code(code, config)
+    assert len(errors) == 1
+    assert errors[0][2] == "Invalid tag key 'invalid_key'"
 
 
-def test_lint_notebooks() -> None:
-    return None
+def test_invalid_tag_value():
+    code = """
+    instance = ComputeInstance(name='my_instance', tags={'environment': 'invalid'})
+    """
+    errors = lint_code(code, config)
+    assert len(errors) == 1
+    assert errors[0][2] == "Invalid value 'invalid' for key 'environment'"
 
-def test_process_file() -> None:
-    return None
+
+def test_valid_tags():
+    code = """
+    instance = ComputeInstance(name='my_instance', tags={'environment': 'dev', 'businessOwner': 'owner@example.com', 'technicalOwner': 'USA-IT', 'businesUnit': 'BU1', 'source': 'terraform', 'ismsClassification': 'M'})
+    """
+    errors = lint_code(code, config)
+    assert len(errors) == 0
+
+
+def test_lint_notebook():
+    notebook_content = {"cells": [{"cell_type": "code", "source": ["instance = ComputeInstance(name='my_instance')"]}]}
+    with open("tests/test_notebook.ipynb", "w") as f:
+        import json
+
+        json.dump(notebook_content, f)
+    errors = lint_notebook("tests/test_notebook.ipynb", config)
+    assert len(errors) == 1
+    assert errors[0][2] == "E001: ComputeInstance instantiation is missing tags argument"
+
+
+# Clean up test notebook file after tests
+def teardown_module(module):
+    import os
+
+    if os.path.exists("tests/test_notebook.ipynb"):
+        os.remove("tests/test_notebook.ipynb")

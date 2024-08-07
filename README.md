@@ -1,7 +1,9 @@
 [![mansa-ci-pipeline](https://github.com/b2impact/mansa/actions/workflows/ci-pipeline.yaml/badge.svg)](https://github.com/b2impact/mansa/actions/workflows/ci-pipeline.yaml)
-# Mansa - a FinOps aware linter
+# Mansa - a FinOps friendly linter
 
-![image.jpg](./docs/images/meme.jpg)
+<p align="center">
+<img src="/docs/images/meme.jpg">
+</p>
 
 FinOps is an operational framework and cultural practice that enhances the business value derived from cloud technology. It promotes data-driven decision-making in a timely manner and fosters financial responsibility. It gets achieved through collaboration among engineering, finance, and business teams.
 

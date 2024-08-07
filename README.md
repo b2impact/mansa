@@ -27,11 +27,19 @@ Mansa also looks that the tags contains a certain key-value pairs with allowed v
 
 [Mansa Musa](https://en.wikipedia.org/wiki/Mansa_Musa) was the 9th Mansa of the Mali Empire, he was one of the richest people in history. According to some research \[1\] he was so rich that he was generating inflation wherever he went. His wealth was not measurable and therefore neither his spending. We took inspiration of his story for the naming of this package as we believe that is important to keep track of cost and we do not want to contribute to the [cloud cost inflation phenomena](https://www.techtarget.com/searchcio/news/366570542/Cloud-costs-continue-to-rise-in-2024#:~:text=The%20cloud%20inflation%20trend%20looks,pattern%20of%20rising%20cloud%20costs.).
 
-# Usage
+# Usage guide
+
+Just run: 
 
 ``` bash
 mansa --directory .
 mansa --file mypythonfile.py
+```
+If you want to use your custom config.toml file you can use:
+
+``` bash
+mansa --directory . --config myfile.toml
+mansa --file mypythonfile.py --config myfile.toml
 ```
 
 # Build Instructions

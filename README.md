@@ -45,15 +45,8 @@ mansa --file mypythonfile.py
 2.  Clone this repository with:
 
     ``` bash
-    git clone https://b2holdingglobal@dev.azure.com/b2holdingglobal/Data%20and%20Analytics%20-%20Internal/_git/dna-mansa
+    git clone https://github.com/b2impact/mansa.git
     ```
-
-    Or if you have an [Azure DevOps ssh key](https://learn.microsoft.com/en-us/azure/devops/repos/git/use-ssh-keys-to-authenticate?view=azure-devops) in your computer:
-
-    ``` bash
-    git@ssh.dev.azure.com:v3/b2holdingglobal/Data%20and%20Analytics%20-%20Internal/dna-mansa
-    ```
-
 3.  Ensure poetry is using the correct virtual environment. You can activate the environment manually with:
 
     ``` bash

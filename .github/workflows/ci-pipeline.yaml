@@ -1,0 +1,78 @@
+name: mansa-ci-pipeline
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+        - docs/**
+        - README.md
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+    - docs/**
+    - README.md
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install Poetry
+      run: pipx install poetry
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+        cache: poetry
+        cache-dependency-path: poetry.lock
+
+    - name: Configure Poetry
+      run: poetry config virtualenvs.in-project true
+
+    - name: Install dependencies
+      run: poetry install --no-root
+      
+    - name: Run linters
+      run: |
+        set +e
+        set -o pipefail
+        global_status=0
+
+        echo -e "### Running ruff ###\n"
+        poetry run ruff check . --output-format=github
+        status=$?
+        if [[ $status -eq 0 ]]
+        then
+            echo -e "No problem detected by ruff\n"
+        else
+            echo -e "Problems detected by ruff, please fix them\n"
+            global_status=1
+        fi
+
+        echo -e "### Linting completed ###\n"
+
+        if [[ $global_status -eq 1 ]]
+        then
+            echo -e "Linting failed\n"
+            exit 1
+        else
+            echo -e "Linting passed\n"
+            exit 0
+        fi
+
+    - name: Run tests with pytest and generate coverage report
+      env:
+        PYTHONPATH: ${{ github.workspace }}
+      run: poetry run pytest -v --junitxml=junit/test-results.xml --cov . --cov-report=xml --cov-report=html
+
+    - name: Publish Coverage Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: '**/coverage.xml'

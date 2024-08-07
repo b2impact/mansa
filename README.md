@@ -1,5 +1,4 @@
-[![Build Status](https://dev.azure.com/b2holdingglobal/Data%20and%20Analytics%20-%20Internal/_apis/build/status%2Fdna-mansa?branchName=main)](https://dev.azure.com/b2holdingglobal/Data%20and%20Analytics%20-%20Internal/_build/latest?definitionId=320&branchName=main)
-
+[![mansa-ci-pipeline](https://github.com/b2impact/mansa/actions/workflows/ci-pipeline.yaml/badge.svg)](https://github.com/b2impact/mansa/actions/workflows/ci-pipeline.yaml)
 # Mansa - a FinOps aware linter
 
 ![image.jpg](./docs/images/meme.jpg)

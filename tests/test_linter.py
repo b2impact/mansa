@@ -100,7 +100,7 @@ def test_valid_tags():
     instance = ComputeInstance(name='my_instance', tags={'environment': 'dev',
     'businessOwner': 'lukasthegreat@b2-impact.com',
     'technicalOwner': 'dna-modelling', 'businesUnit': 'swe', 'source': 'amlsdkv2',
-    'ismsClassification': 'M'})
+    'ismsClassification': 'm'})
     """
     code = textwrap.dedent(code)
     errors = lint_code(code, azure_ml_config)

@@ -67,7 +67,7 @@ jobs:
         fi
 
     - name: Run tests with pytest and generate coverage report
-      run: poetry run pytest -v --no-coverage-upload --junitxml=junit/test-results.xml --cov . --cov-report=xml --cov-report=html
+      run: poetry run pytest -v --junitxml=junit/test-results.xml --cov . --cov-report=xml --cov-report=html
 
     - name: Publish Coverage Report
       uses: actions/upload-artifact@v4

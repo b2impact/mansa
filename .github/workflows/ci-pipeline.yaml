@@ -67,6 +67,8 @@ jobs:
         fi
 
     - name: Run tests with pytest and generate coverage report
+      env:
+        PYTHONPATH: ${{ github.workspace }}
       run: poetry run pytest -v --junitxml=junit/test-results.xml --cov . --cov-report=xml --cov-report=html
 
     - name: Publish Coverage Report

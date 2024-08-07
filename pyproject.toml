@@ -38,8 +38,8 @@ omit = ['__init__.py']
 fail_under = 60
 skip_empty = true
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
+#[tool.pytest.ini_options]
+#testpaths = ["tests"]
 
 [build-system]
 requires = ["poetry-core"]

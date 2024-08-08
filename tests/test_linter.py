@@ -51,8 +51,10 @@ cloud_provider_config = {
 }
 
 
+
 @pytest.mark.parametrize(
     "test_linting_code",
+    "expected_error",
     [
         (
             textwrap.dedent("""instance = ComputeInstance(name='my_instance')"""),
@@ -80,6 +82,7 @@ cloud_provider_config = {
         ),
     ],
 )
+
 def test_lintin(test_linting_code, expected) -> None:
     errors = lint_code(test_linting_code, azure_ml_config)
     assert len(errors) == 1

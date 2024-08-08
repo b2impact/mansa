@@ -50,61 +50,80 @@ cloud_provider_config = {
         }
     }
 
+@pytest.mark.parametrize("test_linting_code", 
+    [
+        (textwrap.dedent("""instance = ComputeInstance(name='my_instance')"""), "E002: 'ComputeInstance' instantiation is missing 'tags' argument"),
+        (textwrap.dedent("""instance = ComputeInstance(name='my_instance', tags='invalid')"""), "Tags argument is not a valid dictionary"),
+        (textwrap.dedent("""instance = ComputeInstance(name='my_instance', tags={'invalid_key': 'value'})"""), "Invalid tag key 'invalid_key'"),
+        (textwrap.dedent("""instance = ComputeInstance(name='my_instance', tags={'environment': 'invalid'})"""), "Invalid value 'invalid' for key 'environment'"),
+        (textwrap.dedent(""" instance = ComputeInstance(name='my_instance', tags={'environment': 'dev',
+                         'businessOwner': 'lukasthegreat@b2-impact.com',
+                         'technicalOwner': 'dna-modelling', 
+                         'businesUnit': 'swe', 'source': 'amlsdkv2',
+                         'ismsClassification': 'm'})"""), 0),
+    ],
+)
 
-# Test cases
-def test_missing_tags_argument():
-    code = """
-    instance = ComputeInstance(name='my_instance')
-    """
-    code = textwrap.dedent(code)
-    errors = lint_code(code, azure_ml_config)
+def test_lintin(test_linting_code, expected) -> None:
+    errors = lint_code(test_linting_code, azure_ml_config)
     assert len(errors) == 1
-    assert errors[0][2] == "E002: 'ComputeInstance' instantiation is missing 'tags' argument"
+    assert errors[0][2] == expected
 
 
-def test_invalid_tags_format():
-    code = """
-    instance = ComputeInstance(name='my_instance', tags='invalid')
-    """
-    code = textwrap.dedent(code)
-    errors = lint_code(code, azure_ml_config)
-    assert len(errors) == 1
-    print(errors)
-    assert errors[0][2] == "Tags argument is not a valid dictionary"
+# # Test cases
+# def test_missing_tags_argument():
+#     code = """
+#     instance = ComputeInstance(name='my_instance')
+#     """
+#     code = textwrap.dedent(code)
+#     errors = lint_code(code, azure_ml_config)
+#     assert len(errors) == 1
+#     assert errors[0][2] == "E002: 'ComputeInstance' instantiation is missing 'tags' argument"
 
 
-def test_invalid_tag_key():
-    code = """
-    instance = ComputeInstance(name='my_instance', tags={'invalid_key': 'value'})
-    """
-    code = textwrap.dedent(code)
-    errors = lint_code(code, azure_ml_config)
-    print(errors)
-    assert len(errors) == 1
-    assert errors[0][2] == "Invalid tag key 'invalid_key'"
+# def test_invalid_tags_format():
+#     code = """
+#     instance = ComputeInstance(name='my_instance', tags='invalid')
+#     """
+#     code = textwrap.dedent(code)
+#     errors = lint_code(code, azure_ml_config)
+#     assert len(errors) == 1
+#     print(errors)
+#     assert errors[0][2] == "Tags argument is not a valid dictionary"
 
 
-def test_invalid_tag_value():
-    code = """
-    instance = ComputeInstance(name='my_instance', tags={'environment': 'invalid'})
-    """
-    code = textwrap.dedent(code)
-    errors = lint_code(code, azure_ml_config)
-    print(errors)
-    assert len(errors) == 1
-    assert errors[0][2] == "Invalid value 'invalid' for key 'environment'"
+# def test_invalid_tag_key():
+#     code = """
+#     instance = ComputeInstance(name='my_instance', tags={'invalid_key': 'value'})
+#     """
+#     code = textwrap.dedent(code)
+#     errors = lint_code(code, azure_ml_config)
+#     print(errors)
+#     assert len(errors) == 1
+#     assert errors[0][2] == "Invalid tag key 'invalid_key'"
 
 
-def test_valid_tags():
-    code = """
-    instance = ComputeInstance(name='my_instance', tags={'environment': 'dev',
-    'businessOwner': 'lukasthegreat@b2-impact.com',
-    'technicalOwner': 'dna-modelling', 'businesUnit': 'swe', 'source': 'amlsdkv2',
-    'ismsClassification': 'm'})
-    """
-    code = textwrap.dedent(code)
-    errors = lint_code(code, azure_ml_config)
-    assert len(errors) == 0
+# def test_invalid_tag_value():
+#     code = """
+#     instance = ComputeInstance(name='my_instance', tags={'environment': 'invalid'})
+#     """
+#     code = textwrap.dedent(code)
+#     errors = lint_code(code, azure_ml_config)
+#     print(errors)
+#     assert len(errors) == 1
+#     assert errors[0][2] == "Invalid value 'invalid' for key 'environment'"
+
+
+# def test_valid_tags():
+#     code = """
+#     instance = ComputeInstance(name='my_instance', tags={'environment': 'dev',
+#     'businessOwner': 'lukasthegreat@b2-impact.com',
+#     'technicalOwner': 'dna-modelling', 'businesUnit': 'swe', 'source': 'amlsdkv2',
+#     'ismsClassification': 'm'})
+#     """
+#     code = textwrap.dedent(code)
+#     errors = lint_code(code, azure_ml_config)
+#     assert len(errors) == 0
 
 
 def test_lint_notebook():

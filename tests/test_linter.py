@@ -27,43 +27,59 @@ azure_ml_config = {
 }
 
 cloud_provider_config = {
-        "azure": {
-            "machine_learning": {
-                "target_classes": {
-                    "AmlComputeProvisioningConfiguration": "E001",
-                    "ComputeInstance": "E002",
-                    "ComputeCluster": "E003",
-                    "BatchDeployment": "E004",
-                    "BatchEndpoint": "E005",
-                    "ManagedOnlineEndpoint": "E006",
-                    "ModelBatchDeployment": "E007",
-                    "OnlineDeployment": "E008",
-                    "OnlineEndpoint": "E009",
-                    "PipelineComponent": "E010",
-                    "PipelineComponentBatchDeployment": "E011",
-                    "Deployment": "E012",
-                    "Jobs": "E013",
-                    "AzureOpenAIDeployment": "E014",
-                    "ServerlessEndpoint": "E015",
-                }
+    "azure": {
+        "machine_learning": {
+            "target_classes": {
+                "AmlComputeProvisioningConfiguration": "E001",
+                "ComputeInstance": "E002",
+                "ComputeCluster": "E003",
+                "BatchDeployment": "E004",
+                "BatchEndpoint": "E005",
+                "ManagedOnlineEndpoint": "E006",
+                "ModelBatchDeployment": "E007",
+                "OnlineDeployment": "E008",
+                "OnlineEndpoint": "E009",
+                "PipelineComponent": "E010",
+                "PipelineComponentBatchDeployment": "E011",
+                "Deployment": "E012",
+                "Jobs": "E013",
+                "AzureOpenAIDeployment": "E014",
+                "ServerlessEndpoint": "E015",
             }
         }
     }
+}
 
-@pytest.mark.parametrize("test_linting_code", 
+
+@pytest.mark.parametrize(
+    "test_linting_code",
     [
-        (textwrap.dedent("""instance = ComputeInstance(name='my_instance')"""), "E002: 'ComputeInstance' instantiation is missing 'tags' argument"),
-        (textwrap.dedent("""instance = ComputeInstance(name='my_instance', tags='invalid')"""), "Tags argument is not a valid dictionary"),
-        (textwrap.dedent("""instance = ComputeInstance(name='my_instance', tags={'invalid_key': 'value'})"""), "Invalid tag key 'invalid_key'"),
-        (textwrap.dedent("""instance = ComputeInstance(name='my_instance', tags={'environment': 'invalid'})"""), "Invalid value 'invalid' for key 'environment'"),
-        (textwrap.dedent(""" instance = ComputeInstance(name='my_instance', tags={'environment': 'dev',
+        (
+            textwrap.dedent("""instance = ComputeInstance(name='my_instance')"""),
+            "E002: 'ComputeInstance' instantiation is missing 'tags' argument",
+        ),
+        (
+            textwrap.dedent("""instance = ComputeInstance(name='my_instance', tags='invalid')"""),
+            "Tags argument is not a valid dictionary",
+        ),
+        (
+            textwrap.dedent("""instance = ComputeInstance(name='my_instance', tags={'invalid_key': 'value'})"""),
+            "Invalid tag key 'invalid_key'",
+        ),
+        (
+            textwrap.dedent("""instance = ComputeInstance(name='my_instance', tags={'environment': 'invalid'})"""),
+            "Invalid value 'invalid' for key 'environment'",
+        ),
+        (
+            textwrap.dedent(""" instance = ComputeInstance(name='my_instance', tags={'environment': 'dev',
                          'businessOwner': 'lukasthegreat@b2-impact.com',
                          'technicalOwner': 'dna-modelling', 
                          'businesUnit': 'swe', 'source': 'amlsdkv2',
-                         'ismsClassification': 'm'})"""), 0),
+                         'ismsClassification': 'm'})"""),
+            0,
+        ),
     ],
 )
-
 def test_lintin(test_linting_code, expected) -> None:
     errors = lint_code(test_linting_code, azure_ml_config)
     assert len(errors) == 1
@@ -144,7 +160,9 @@ def teardown_module(module):
     if os.path.exists("tests/test_notebook.ipynb"):
         os.remove("tests/test_notebook.ipynb")
 
+
 def test_find_target_classes():
     linter = MansaLinter(cloud_provider_config)
     assert linter.target_classes == azure_ml_config["target_classes"]
+
 

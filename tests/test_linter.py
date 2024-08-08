@@ -73,7 +73,7 @@ cloud_provider_config = {
         (
             textwrap.dedent(""" instance = ComputeInstance(name='my_instance', tags={'environment': 'dev',
                          'businessOwner': 'lukasthegreat@b2-impact.com',
-                         'technicalOwner': 'dna-modelling', 
+                         'technicalOwner': 'dna-modelling',
                          'businesUnit': 'swe', 'source': 'amlsdkv2',
                          'ismsClassification': 'm'})"""),
             0,
@@ -164,5 +164,3 @@ def teardown_module(module):
 def test_find_target_classes():
     linter = MansaLinter(cloud_provider_config)
     assert linter.target_classes == azure_ml_config["target_classes"]
-
-

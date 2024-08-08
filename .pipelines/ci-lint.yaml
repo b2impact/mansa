@@ -1,103 +1,78 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+name: mansa-ci-pipeline
 
-trigger:
-  branches:
-    include: # Collaboration branch
-    - main 
-  paths: # If this is the first pipeline it needs to trigger always @Obaid
-    exclude:
-    - docs/*
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+        - docs/**
+        - README.md
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+    - docs/**
     - README.md
-  #   - aml/*
-  #   - devops/aml/*
-  #   - tests/*.py
 
-pool:
-  vmImage: ubuntu-latest
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-steps:
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-- task: UsePythonVersion@0
-  displayName: 'Use Python 3.9'
-  inputs:
-    versionSpec: 3.9
-- task: Bash@3
-  displayName: 'Install poetry'
-  inputs:
-    targetType: 'inline'
-    script: 'python -m pip install poetry'
-- task: Bash@3
-  displayName: 'Configure poetry'
-  inputs:
-    targetType: 'inline'
-    script: 'poetry config virtualenvs.in-project true'
-- task: Cache@2
-  inputs:
-    key: 'poetry | "$(Agent.OS)" | poetry.lock'
-    path: '.venv'
-    restoreKeys: |
-      poetry | "$(Agent.OS)"
-      poetry
-- task: Bash@3
-  displayName: 'Install dependencies'
-  inputs:
-    targetType: 'inline'
-    script: 'poetry install'
-- task: Bash@3
-  displayName: 'Lintin tests'
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Note that any change in this file, adding or removing steps or changing the
-      # printed messages, should be also reflected in the `get_comment.py` file.
-      
-      # This script shouldn't exit if a command / pipeline fails
-      set +e
-      # pipefail is necessary to propagate exit codes
-      set -o pipefail
-      global_status=0
-      
-      echo -e "### Running ruff ###\n"
-      poetry run ruff check .
-      status=$?
-      if [[ $status -eq 0 ]]
-      then
-          echo -e "No problem detected by ruff\n"
-      else
-          echo -e "Problems detected by ruff, please fix them\n"
-          global_status=1
-      fi
+    - name: Install Poetry
+      run: pipx install poetry
 
-      # echo -e "### Running mypy ###\n"
-      # poetry run mypy .
-      # status=$?
-      # if [[ $status -eq 0 ]]
-      # then
-      #     echo -e "No problem detected by mypy\n"
-      # else
-      #     echo -e "Problems detected by mypy, please fix them\n"
-      #     global_status=1
-      # fi
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+        cache: poetry
+        cache-dependency-path: poetry.lock
+
+    - name: Configure Poetry
+      run: poetry config virtualenvs.in-project true
+
+    - name: Install dependencies
+      run: poetry install --no-root
       
-      echo -e "### Linting completed ###\n"
-      
-      if [[ $global_status -eq 1 ]]
-      then
-          echo -e "Linting failed\n"
-          exit 1
-      else
-          echo -e "Linting passed\n"
-          exit 0
-      fi
-- task: Bash@3
-  displayName: 'Pytest Unit Test with Coverage Report'
-  inputs:
-    targetType: 'inline'
-    script: 'poetry run pytest -v --no-coverage-upload --junitxml=junit/test-results.xml --cov . --cov-report xml'
-- task: PublishCodeCoverageResults@2
-  displayName: 'Publish Coverage Report'
-  inputs:
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
+    - name: Run linters
+      run: |
+        set +e
+        set -o pipefail
+        global_status=0
+
+        echo -e "### Running ruff ###\n"
+        poetry run ruff check . --output-format=github
+        status=$?
+        if [[ $status -eq 0 ]]
+        then
+            echo -e "No problem detected by ruff\n"
+        else
+            echo -e "Problems detected by ruff, please fix them\n"
+            global_status=1
+        fi
+
+        echo -e "### Linting completed ###\n"
+
+        if [[ $global_status -eq 1 ]]
+        then
+            echo -e "Linting failed\n"
+            exit 1
+        else
+            echo -e "Linting passed\n"
+            exit 0
+        fi
+
+    - name: Run tests with pytest and generate coverage report
+      env:
+        PYTHONPATH: ${{ github.workspace }}
+      run: poetry run pytest -v --junitxml=junit/test-results.xml --cov . --cov-report=xml --cov-report=html
+
+    - name: Publish Coverage Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: '**/coverage.xml'

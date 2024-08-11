@@ -44,7 +44,7 @@ jobs:
     - name: Run Tox
       env:
         PYTHONPATH: ${{ github.workspace }}
-      run: tox -p
+      run: tox
       
     - name: Run linters
       run: |

@@ -1,4 +1,5 @@
-[![mansa-ci-pipeline](https://github.com/b2impact/mansa/actions/workflows/ci-pipeline.yaml/badge.svg)](https://github.com/b2impact/mansa/actions/workflows/ci-pipeline.yaml)
+[![mansa-ci-pipeline](https://github.com/b2impact/mansa/actions/workflows/ci-pipeline.yaml/badge.svg)](https://github.com/b2impact/mansa/actions/workflows/ci-pipeline.yaml)![Python Versions](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)[![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)
+
 # Mansa - a FinOps friendly linter
 
 <p align="center">

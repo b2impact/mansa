@@ -27,28 +27,28 @@ azure_ml_config = {
 }
 
 cloud_provider_config = {
-        "azure": {
-            "machine_learning": {
-                "target_classes": {
-                    "AmlComputeProvisioningConfiguration": "E001",
-                    "ComputeInstance": "E002",
-                    "ComputeCluster": "E003",
-                    "BatchDeployment": "E004",
-                    "BatchEndpoint": "E005",
-                    "ManagedOnlineEndpoint": "E006",
-                    "ModelBatchDeployment": "E007",
-                    "OnlineDeployment": "E008",
-                    "OnlineEndpoint": "E009",
-                    "PipelineComponent": "E010",
-                    "PipelineComponentBatchDeployment": "E011",
-                    "Deployment": "E012",
-                    "Jobs": "E013",
-                    "AzureOpenAIDeployment": "E014",
-                    "ServerlessEndpoint": "E015",
-                }
+    "azure": {
+        "machine_learning": {
+            "target_classes": {
+                "AmlComputeProvisioningConfiguration": "E001",
+                "ComputeInstance": "E002",
+                "ComputeCluster": "E003",
+                "BatchDeployment": "E004",
+                "BatchEndpoint": "E005",
+                "ManagedOnlineEndpoint": "E006",
+                "ModelBatchDeployment": "E007",
+                "OnlineDeployment": "E008",
+                "OnlineEndpoint": "E009",
+                "PipelineComponent": "E010",
+                "PipelineComponentBatchDeployment": "E011",
+                "Deployment": "E012",
+                "Jobs": "E013",
+                "AzureOpenAIDeployment": "E014",
+                "ServerlessEndpoint": "E015",
             }
         }
     }
+}
 
 
 # Test cases
@@ -124,6 +124,7 @@ def teardown_module(module):
 
     if os.path.exists("tests/test_notebook.ipynb"):
         os.remove("tests/test_notebook.ipynb")
+
 
 def test_find_target_classes():
     linter = MansaLinter(cloud_provider_config)

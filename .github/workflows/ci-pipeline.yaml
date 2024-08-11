@@ -15,64 +15,91 @@ on:
     - README.md
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
+    - name: Checkout Repo
       uses: actions/checkout@v4
 
     - name: Install Poetry
       run: pipx install poetry
 
-    - name: Set up Python 3.9
+    - name: Install Tox
+      run: pipx install tox
+
+    - name: Set up Python 3.10
       uses: actions/setup-python@v5
       with:
-        python-version: '3.9'
+        python-version: '3.10'
+        cache: poetry
+        cache-dependency-path: poetry.lock
+
+    - name: Install dependencies
+      run: |
+        poetry install
+
+    - name: Run linting
+      run: |
+        poetry run tox -e lint
+
+  build:
+    needs: lint
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ['3.9', '3.10', '3.11', '3.12']
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v4
+    
+    - name: Install Poetry
+      run: pipx install poetry
+
+    - name: Install Tox
+      run: pipx install tox
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
         cache: poetry
         cache-dependency-path: poetry.lock
 
     - name: Configure Poetry
       run: poetry config virtualenvs.in-project true
 
+    - name: Run Pytests via Poetry and Tox
+      run: poetry run tox -e py${{ matrix.python-version }}
+
+  coverage:
+    needs: ['lint', 'build']
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Poetry
+      run: pipx install poetry
+
+    - name: Install Tox
+      run: pipx install tox
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: poetry
+        cache-dependency-path: poetry.lock
+
     - name: Install dependencies
-      run: poetry install --no-root
-      
-    - name: Run linters
       run: |
-        set +e
-        set -o pipefail
-        global_status=0
+        poetry install
 
-        echo -e "### Running ruff ###\n"
-        poetry run ruff check . --output-format=github
-        status=$?
-        if [[ $status -eq 0 ]]
-        then
-            echo -e "No problem detected by ruff\n"
-        else
-            echo -e "Problems detected by ruff, please fix them\n"
-            global_status=1
-        fi
+    - name: Run coverage
+      run: poetry run tox -e coverage
 
-        echo -e "### Linting completed ###\n"
-
-        if [[ $global_status -eq 1 ]]
-        then
-            echo -e "Linting failed\n"
-            exit 1
-        else
-            echo -e "Linting passed\n"
-            exit 0
-        fi
-
-    - name: Run tests with pytest and generate coverage report
-      env:
-        PYTHONPATH: ${{ github.workspace }}
-      run: poetry run pytest -v --junitxml=junit/test-results.xml --cov . --cov-report=xml --cov-report=html
-
-    - name: Publish Coverage Report
+    - name: Upload Coverage Report
       uses: actions/upload-artifact@v4
       with:
         name: coverage-report
-        path: '**/coverage.xml'
+        path: coverage.xml

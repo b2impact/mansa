@@ -8,6 +8,7 @@ default_path = "./logging.json"
 default_level = logging.INFO
 env_key = "LOG_CFG"
 
+
 class Logger:
     """Logger class."""
 

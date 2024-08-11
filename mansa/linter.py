@@ -216,6 +216,7 @@ def process_file(filepath: str, config: dict) -> list[tuple]:
         errors = [(filepath, lineno, name, message) for lineno, name, message in lint_errors]
     return errors
 
+
 def main() -> None:
     """Execute the linter via a cli invocation."""
     parser = argparse.ArgumentParser(description="Custom Python Linter")
@@ -251,5 +252,7 @@ def main() -> None:
             print(f"{filepath}:{lineno}: {name}: {message}")
         else:
             print(f"{filepath}:{lineno}: {message}")
+
+
 if __name__ == "__main__":
     main()

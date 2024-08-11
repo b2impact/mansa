@@ -96,6 +96,18 @@ To run the tests, run the following in the root directory of the project:
 poetry run pytest
 ```
 
+Or to run multiversion tests with linting included:
+
+``` bash
+poetry run tox
+```
+
+To install tox we recommend using pipx as:
+
+``` bash
+pipx install tox
+```
+
 ### Introducing dependencies
 
 Please install dependencies via:

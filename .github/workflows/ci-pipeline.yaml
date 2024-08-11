@@ -41,8 +41,5 @@ jobs:
     - name: Configure Poetry
       run: poetry config virtualenvs.in-project true
 
-    - name: Install Python Dependencies
-      run: poetry install
-
     - name: Run Pytests via Poetry and Tox
       run: poetry run tox -e py${{ matrix.python-version }}

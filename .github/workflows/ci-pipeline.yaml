@@ -28,6 +28,9 @@ jobs:
     - name: Install Poetry
       run: pipx install poetry
 
+    - name: Install Tox
+      run: pipx install tox
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:

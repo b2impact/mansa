@@ -24,9 +24,6 @@ jobs:
     - name: Install Poetry
       run: pipx install poetry
 
-    - name: Install Tox
-      run: pipx install tox
-
     - name: Set up Python 3.10
       uses: actions/setup-python@v5
       with:
@@ -40,7 +37,7 @@ jobs:
 
     - name: Run linting
       run: |
-        poetry run tox -e lint
+        poetry run ruff check .
 
   build:
     needs: lint

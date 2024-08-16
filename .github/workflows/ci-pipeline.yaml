@@ -39,7 +39,7 @@ jobs:
       run: |
         poetry run ruff check .
 
-  build:
+  tests:
     needs: lint
     runs-on: ${{ matrix.os }}
     strategy:
@@ -70,7 +70,7 @@ jobs:
       run: poetry run tox -e py${{ matrix.python-version }}
 
   coverage:
-    needs: ['lint', 'build']
+    needs: ['lint', 'tests']
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4

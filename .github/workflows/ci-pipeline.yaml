@@ -100,3 +100,42 @@ jobs:
       with:
         name: coverage-report
         path: coverage.xml
+
+  create-release-tag:
+    needs: ['lint', 'tests', 'coverage']
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v4
+
+    - name: Install Poetry
+      run: pipx install poetry
+
+    - name: Create Tag Locally
+      id: create_tag
+      run: |
+        VERSION=$(poetry version --short)
+        echo "v$VERSION" > VERSION.txt
+        git tag -a "v$VERSION" -m "Release version $VERSION"
+
+    - name: Trigger CD Pipeline
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const version = require('fs').readFileSync('VERSION.txt', 'utf8').trim();
+          github.actions.createWorkflowDispatch({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            workflow_id: 'cd-pipeline.yaml',
+            ref: 'main',
+            inputs: {
+              tag_name: version
+            }
+          });
+
+    - name: Store the Tag Information
+      uses: actions/upload-artifact@v4
+      with:
+        name: version
+        path: VERSION.txt

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mansa"
-version = "0.1.0"
+version = "0.1.1"
 description = "Making your CCoE happy"
 authors = ["Edgar Bahilo <edgar.bahilo@b2-impact.com>"]
 license = "MIT"

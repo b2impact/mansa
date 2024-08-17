@@ -1,6 +1,11 @@
-on:
-  workflow_dispatch:
+name: mansa-cd-pipeline
 
+on:
+  push:
+    branches:
+      - main
+    tags:        
+      - '*' 
 jobs:
     build:
         runs-on: ubuntu-latest

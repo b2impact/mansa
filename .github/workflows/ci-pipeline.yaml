@@ -1,12 +1,6 @@
 name: mansa-ci-pipeline
 
 on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-        - docs/**
-        - README.md
   pull_request:
     branches:
       - main
@@ -100,22 +94,3 @@ jobs:
       with:
         name: coverage-report
         path: coverage.xml
-
-  cd-pipeline:
-    needs: ['lint', 'tests', 'coverage']
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-    - name: Checkout Repo
-      uses: actions/checkout@v4
-
-    - name: Trigger CD Pipeline
-      uses: actions/github-script@v6
-      with:
-        script: |
-          github.actions.createWorkflowDispatch({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            workflow_id: 'cd-pipeline.yaml',
-            ref: 'main'
-          });

@@ -1,12 +1,5 @@
-name: cd-pipeline
-
 on:
   workflow_dispatch:
-    inputs:
-      tag_name:
-        description: 'Tag name to be created and pushed'
-        required: true
-        default: ''
 
 jobs:
     build:
@@ -51,7 +44,7 @@ jobs:
         url: https://test.pypi.org/p/mansa
       permissions:
         id-token: write  # IMPORTANT: mandatory for trusted publishing
-
+        
       steps:
       - name: Download all the dists
         uses: actions/download-artifact@v4
@@ -94,7 +87,7 @@ jobs:
       permissions:
         contents: write  # IMPORTANT: mandatory for making GitHub Releases
         id-token: write  # IMPORTANT: mandatory for sigstore
-
+  
       steps:
       - name: Download all the dists
         uses: actions/download-artifact@v4
@@ -110,31 +103,18 @@ jobs:
       - name: Create GitHub Release
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: >
+        run: >-
           gh release create
-          '${{ github.event.inputs.tag_name }}'
+          '${{ github.ref_name }}'
           --repo '${{ github.repository }}'
           --notes ""
       - name: Upload artifact signatures to GitHub Release
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: >
+        # Upload to GitHub Release using the `gh` CLI.
+        # `dist/` contains the built packages, and the
+        # sigstore-produced signatures and certificates.
+        run: >-
           gh release upload
-          '${{ github.event.inputs.tag_name }}' dist/**
+          '${{ github.ref_name }}' dist/**
           --repo '${{ github.repository }}'
-    push-tag:
-      needs: github-release
-      runs-on: ubuntu-latest
-      steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-
-      - name: Download Tag Info
-        uses: actions/download-artifact@v4
-        with:
-          name: version
-
-      - name: Push Tag to Repository
-        run: |
-          TAG=$(cat VERSION.txt)
-          git push origin "$TAG"

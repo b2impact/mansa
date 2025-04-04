@@ -26,6 +26,8 @@ share/python-wheels/
 *.egg
 MANIFEST
 junit
+bin/* # local github actions
+act
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

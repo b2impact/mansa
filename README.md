@@ -60,8 +60,7 @@ mansa --file mypythonfile.py --config myfile.toml
     uv pip install -e ".[dev]"
     ```
 
-4.  Genetare the lock file if it does not exist:
-
+4.  Generate the lock file if it does not exist:
     ``` bash
     uv pip compile pyproject.toml -o uv.lock
     ```

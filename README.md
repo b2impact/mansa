@@ -44,8 +44,7 @@ mansa --file mypythonfile.py --config myfile.toml
 
 # Build Instructions
 
-1.  Install uv via the [oficial installer](https://docs.astral.sh/uv/getting-started/installation/#installation-methods):
-
+1.  Install uv via the [official installer](https://docs.astral.sh/uv/getting-started/installation/#installation-methods):
     ``` bash
     curl -LsSf https://astral.sh/uv/install.sh | sh
     ```

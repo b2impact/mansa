@@ -44,10 +44,9 @@ mansa --file mypythonfile.py --config myfile.toml
 
 # Build Instructions
 
-1.  Install poetry via the [oficial installer](https://python-poetry.org/docs/#installing-with-the-official-installer):
-
+1.  Install uv via the [official installer](https://docs.astral.sh/uv/getting-started/installation/#installation-methods):
     ``` bash
-    curl -sSL https://install.python-poetry.org | python3 -
+    curl -LsSf https://astral.sh/uv/install.sh | sh
     ```
 
 2.  Clone this repository with:
@@ -55,22 +54,15 @@ mansa --file mypythonfile.py --config myfile.toml
     ``` bash
     git clone https://github.com/b2impact/mansa.git
     ```
-3.  Ensure poetry is using the correct virtual environment. You can activate the environment manually with:
+3.  Install dependencies and build the package:
 
     ``` bash
-    poetry shell
+    uv pip install -e ".[dev]"
     ```
 
-4.  Install dependencies and build the package:
-
+4.  Generate the lock file if it does not exist:
     ``` bash
-    poetry install
-    ```
-
-5.  Build the package:
-
-    ``` bash
-    poetry build
+    uv pip compile pyproject.toml -o uv.lock
     ```
 
 # Development guidelines
@@ -92,19 +84,19 @@ As usual, we stick to [TBD](https://trunkbaseddevelopment.com/), Create your own
 To run the tests, run the following in the root directory of the project:
 
 ``` bash
-poetry run pytest
+uv run pytest
 ```
 
 Or to run multiversion tests with linting included:
 
 ``` bash
-poetry run tox
+tox
 ```
 
-To install tox we recommend using pipx as:
+To install tox and run it with uv you will need tox-uv and tox:
 
 ``` bash
-pipx install tox
+uv pip install tox tox-uv
 ```
 
 ### Introducing dependencies
@@ -112,7 +104,7 @@ pipx install tox
 Please install dependencies via:
 
 ``` bash
-poetry add {dependency-name}=={version}
+uv add {dependency-name}=={version}
 ```
 
 When doing that your pyproject.toml file will be automatically updated as well as the lock files.

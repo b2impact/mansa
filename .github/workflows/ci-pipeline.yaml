@@ -19,8 +19,14 @@ jobs:
       uses: astral-sh/setup-uv@v5
       with:
         pyproject-file: "pyproject.toml"
+        version: "0.6.12"
         enable-cache: true
         cache-dependency-glob: "uv.lock"
+  
+    - name: "Set up Python"
+      uses: actions/setup-python@v5
+      with:
+        python-version-file: "pyproject.toml"
 
     - name: Install the project
       run: uv sync --all-extras --dev
@@ -65,13 +71,16 @@ jobs:
     - name: Set up uv
       uses: astral-sh/setup-uv@v5
       with:
-        python-version: '3.10'
         pyproject-file: "pyproject.toml"
+        version: "0.6.12"
         enable-cache: true
         cache-dependency-glob: "uv.lock"
 
     - name: Install the project
       run: uv sync --all-extras --dev
+
+    - name: Install Tox and Tox-uv
+      run: uv tool install tox --with tox-uv
 
     - name: Run coverage
       run: uv run tox -e coverage

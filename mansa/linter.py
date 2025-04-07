@@ -14,8 +14,8 @@ VALID_TAGS = {
     "businessOwner": re.compile(r".+@.+\..+"),
     "technicalOwner": re.compile(r"[A-Za-z]{1,4}-[A-Za-z]+"),
     "businesUnit": re.compile(r"^[A-Za-z]{3}$"),
-    "source": ["terraform", "portal", "amlsdkv2", "amlsdkv1"],
-    "ismsClassification": ["l", "m", "m"],
+    #"source": ["terraform", "portal", "amlsdkv2", "amlsdkv1"],
+    #"ismsClassification": ["l", "m", "m"],
 }
 
 
